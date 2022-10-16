@@ -26,6 +26,7 @@ def save_error_log(url):
         s.write("请求错误"+url+'\n')
 
 def single_task(position,city_code,task):
+    # x y
     if position:
         x = position[0]
         y = position[1]
@@ -78,7 +79,7 @@ def run_task(task_num,city_code,task_info):
             tasks.append((x,y,))
     logging.warning('开始执行任务')
     pool = ThreadPoolExecutor(max_workers=MAX_CONCURRENT)
-    for i in range(task_num):
+    for i in range(task_num):# 2500
         pool.submit(single_task,tasks.pop(),city_code,task_info)
     pool.shutdown()
     logging.info("爬虫任务结束!")

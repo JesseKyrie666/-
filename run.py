@@ -2,18 +2,18 @@
 
 
 import logging
-from engine import *
+from engine import * # 配置文件
 import json
-from main import run_task
-from check_retry import check_total
-from add_imgs import add_img_big
-from kafka import KafkaConsumer
+from main import run_task # 主爬虫程序
+from check_retry import check_total # 图片校验
+from add_imgs import add_img_big # 图片拼接
+from kafka import KafkaConsumer # kafka消费者-->v1版本 消息队列交互
 import time
 from baoyou import baoyou_001
 import redis
-import requests
-from consumer import RBMQ_Consumer
-import socket
+import requests # 发送请求 ====> 调用后端接口，1. 心跳检测 2. 任务进度
+from consumer import RBMQ_Consumer # ===> v2版本 消息队列交互 rabbitmq
+import socket # 获取节点信息
 import os
 
 log_format = '%(levelname)s <=== (%(asctime)s) ====> %(message)s'
@@ -25,6 +25,7 @@ logging.basicConfig(
 
 
 def send_time(task, margs):
+    # 发送任务进度
     if margs == "start":
         msg = {
             "id": task['id'],
@@ -85,6 +86,7 @@ def change_status(_id, status):
 
 
 def start_consumer():
+    # v1版本 消息队列交互
     # 获取到一个消息
     consumer = KafkaConsumer(KAFKA_QUEUE, bootstrap_servers='192.168.10.230:9092', group_id='cleaner')
     msg = next(consumer)
@@ -115,16 +117,16 @@ def run(task_msg):
     # input("请确认提交文件夹是否正确，按回车键继续")
     task['pushDir_use'] = pushDir_part
     baoyou_001()
-    run_task(task_num, city_code, task)
+    run_task(task_num, city_code, task) # 启动爬虫
     logging.warning('<===============爬虫已结束================>')
     print("=========爬虫已结束=========")
     # # 开始校验数据
     logging.warning('<===============开始校验任务数据总量================>')
-    check_data(task)  # 单线程处理数据超时异常
+    check_data(task)  # 数据校验
     logging.warning('<===============校验任务数据总量结束================>')
     logging.warning('<===============下载任务完成================>')
     print("=========下载任务完成=========")
-    img_mission_async(task)
+    img_mission_async(task) # 拼图
     end_time = int(time.time())
     speed = int(2500 / (end_time - start_time))
     heart_beat(speed)

@@ -14,7 +14,7 @@ class RBMQ_Consumer:
         self.channel.queue_declare(queue=self.QUEEUE_NAME, durable=True)
         # 设置只接受一条消息
         self.channel.basic_qos(prefetch_count=1)
-        self.new_func = new_func
+        self.new_func = new_func # 消费主函数
     def callback(self, ch, method, properties, body):
         if body:
             # msg = pickle.loads(body)

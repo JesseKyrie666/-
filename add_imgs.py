@@ -1,8 +1,8 @@
 # coding=utf-8
 
+import os
 import logging
 from PIL import Image
-import os
 from engine import SAVE_DIR
 
 

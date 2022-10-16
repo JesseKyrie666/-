@@ -17,10 +17,10 @@ uri = 'https://mts0.google.com/vt/lyrs=r@189000000&hl=en&src=app&x={}&y={}&z={}&
 
 
 # 文件持久化
-# SAVE_DIR = '/home/map/{}/' # 服务器本地请使用这个按照国家名称存储
+SAVE_DIR = '/home/map/{}/' # 服务器本地请使用这个按照国家名称存储
 # SAVE_DIR = r'\\192.168.10.230\tile\{}/' # 其他机器请使用这个
 # 新ssd
-SAVE_DIR = r'\\192.168.10.230\ssd\map\{}/' # 其他机器请使用这个
+# SAVE_DIR = r'\\192.168.10.230\ssd\map\{}/' # 其他机器请使用这个
 
 
 # 日志输出文件
